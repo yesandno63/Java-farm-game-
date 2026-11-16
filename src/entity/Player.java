@@ -8,4 +8,6 @@ public class Player extends Entity{
         y = 100;
         speed = 4;
     }
+
+    // TODO faire sprite et animation + méthode pour les gerer
 }
