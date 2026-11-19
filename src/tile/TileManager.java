@@ -23,7 +23,8 @@ public class TileManager {
 
         tileSets = new ArrayList<TileSet>();
 
-        groundLayer = new int[gp.maxScreenRow][gp.maxScreenCol];
+        // La couche est indexée [ligne][colonne] : 12 lignes et 16 colonnes.
+        groundLayer = new int[gp.maxScreenCol][gp.maxScreenRow];
 
         loadAllTileSets();
 
@@ -38,7 +39,7 @@ public class TileManager {
     //On load chaque Tile Sets (si y'en a plusieurs)
     private void loadAllTileSets() {
         loadTileSets(
-                "res/TileSheet/Environement/tileset_32x32_tiled.png",
+                "/res/TileSheet/Environement/tileset_32x32_tiled.png",
                 32,
                 0
         );
@@ -69,8 +70,8 @@ public class TileManager {
 
                 Tile tile = new Tile();
                 tile.image = image.getSubimage(
-                        cols * sourceTileSize,
-                        rows * sourceTileSize,
+                        col * sourceTileSize,
+                        row * sourceTileSize,
                         sourceTileSize,
                         sourceTileSize
                 );
@@ -113,11 +114,11 @@ public class TileManager {
             );
 
             int rowCount = 0;
-            for(int row = 0; row < gp.maxScreenRow; ++row){
+            for(int row = 0; row < gp.maxScreenCol; ++row){
 
                 String[] values = br.readLine().split(",");
 
-                for(int col = 0; col < gp.maxScreenCol; ++col){
+                for(int col = 0; col < gp.maxScreenRow; ++col){
                     int localGid = Integer.parseInt(values[col]);
 
                     //Convertion indice local en GID global
@@ -128,7 +129,7 @@ public class TileManager {
                         globalGid = -1; // Ya pas de tile bro, en gros problème
                     } else {
                         // On le convertit en GID global en ajoutant le firstGid du tileset
-                        globalGid = localGid + tileSetFirstGid -1;
+                        globalGid = localGid + tileSetFirstGid;
                     }
 
                     if(rowCount < 3 && col < 5){
@@ -152,8 +153,8 @@ public class TileManager {
         int x = 0;
         int y = 0;
 
-        for(int row = 0; row < gp.maxScreenRow; ++row){
-            for(int col = 0; col < gp.maxScreenCol; ++col){
+        for(int row = 0; row < gp.maxScreenCol; ++row){
+            for(int col = 0; col < gp.maxScreenRow; ++col){
 
                 int gid = layer[row][col];
                 Tile tile = getTileByGID(gid);
