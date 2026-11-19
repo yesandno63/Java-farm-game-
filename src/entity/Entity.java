@@ -5,12 +5,12 @@ import java.util.Map;
 
 public class Entity {
 
-    public int x,y;
+    public int worldX,worldY;
     public int speed;
 
     public BufferedImage[] framesDown, framesUp, framesLeft, framesRight, framesIdleDown, framesIdleUp, framesIdleLeft, framesIdleRight;
     public String direction;
-    int scalePlayer = 3;
+    int scalePlayer = 4;
 
     public int spriteCounter = 0;
     public int spriteNum = 1;

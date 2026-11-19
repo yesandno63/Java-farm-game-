@@ -13,12 +13,18 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler KeyH;
 
+    public final int screenX;
+    public final int screenY;
+
     //Nombre de sprite par spriteSheet
     int frameCount = 8;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler){
         this.gp = gamePanel;
         this.KeyH = keyHandler;
+
+        screenX = gp.screenWidth/2 -(gp.tileSize*2);
+        screenY = gp.screenHeight/2 -(gp.tileSize*2);
 
         animationFrames = new HashMap<>();
 
@@ -31,8 +37,8 @@ public class Player extends Entity{
 
     public void setDefaultValues() {
 
-        x = 100;
-        y = 100;
+        worldX = gp.tileSize*2;
+        worldY = gp.tileSize*2;
         speed = 4;
         direction="down";
     }
@@ -127,22 +133,22 @@ public class Player extends Entity{
         //On récup la direction dans laquelle se dirige le player et s'il bouge (en gros on regarde s'il appuie sur une touche)
         if (KeyH.upPressed){
             setDirection("up");
-            y -= speed;
+            worldY -= speed;
             moving = true;
         }
         else if (KeyH.downPressed){
             setDirection("down");
-            y += speed;
+            worldY += speed;
             moving = true;
         }
         else if (KeyH.leftPressed){
             setDirection("left");
-            x -= speed;
+            worldX -= speed;
             moving = true;
         }
         else if (KeyH.rightPressed){
             setDirection("right");
-            x += speed;
+            worldX += speed;
             moving = true;
         }
 
@@ -218,6 +224,6 @@ public class Player extends Entity{
                 image = framesIdleRight[spriteNum];
                 break;
         }
-        g2.drawImage(image, x, y, gp.tileSize*scalePlayer, gp.tileSize*scalePlayer, null);
+        g2.drawImage(image, screenX, screenY, gp.tileSize*scalePlayer, gp.tileSize*scalePlayer, null);
     }
 }
