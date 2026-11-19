@@ -1,9 +1,9 @@
 {
     "activeFile": "Tiled/Maps/farm.tmx",
     "expandedProjectPaths": [
-        "Tiled",
         ".",
         "Tiled/Environement",
+        "Tiled",
         "Tiled/Maps"
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -13,11 +13,11 @@
             "scaleInEditor": 3
         },
         "Tiled/Maps/farm.tmx": {
-            "scale": 0.25,
+            "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1566,
-                "y": 1518
+                "x": 1316.6666666666665,
+                "y": 1298.4848484848485
             }
         }
     },

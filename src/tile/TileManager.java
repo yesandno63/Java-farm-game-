@@ -23,8 +23,8 @@ public class TileManager {
 
         tileSets = new ArrayList<TileSet>();
 
-        // La couche est indexée [ligne][colonne] : 12 lignes et 16 colonnes.
-        groundLayer = new int[gp.maxScreenCol][gp.maxScreenRow];
+        // La couche est indexée [collone][ligne] : 12 lignes et 16 colonnes.
+        groundLayer = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         loadAllTileSets();
 
@@ -114,11 +114,11 @@ public class TileManager {
             );
 
             int rowCount = 0;
-            for(int row = 0; row < gp.maxScreenCol; ++row){
+            for(int row = 0; row < gp.maxWorldCol; ++row){
 
                 String[] values = br.readLine().split(",");
 
-                for(int col = 0; col < gp.maxScreenRow; ++col){
+                for(int col = 0; col < gp.maxWorldRow; ++col){
                     int localGid = Integer.parseInt(values[col]);
 
                     //Convertion indice local en GID global
@@ -150,17 +150,16 @@ public class TileManager {
 
     public void drawLayer(Graphics2D g2, int[][] layer){
 
-        int x = 0;
-        int y = 0;
+        int worldCol = 0;
+        int worldRow = 0;
 
-        for(int row = 0; row < gp.maxScreenCol; ++row){
-            for(int col = 0; col < gp.maxScreenRow; ++col){
+        for(worldCol = 0; worldCol < gp.maxScreenCol; ++worldCol){
+            for(worldRow = 0; worldRow < gp.maxScreenRow; ++worldRow){
 
-                int gid = layer[row][col];
+                int gid = layer[worldCol][worldRow];
                 Tile tile = getTileByGID(gid);
 
                 if(tile != null && tile.image != null) {
-                    //DEBUG
                     g2.drawImage(
                             tile.image,
                             x, y,
@@ -169,7 +168,7 @@ public class TileManager {
                     );
                 }
 
-                //DEBUG tile si jamais ya une merde dans les tile, ou jsp mais tkt
+                //DEBUG tile si jamais ya une merde dans les chargement/affichage de tiles, où jsp mais tkt le talent
                 if (tile == null) {
                     g2.setColor(Color.RED);
                     g2.drawRect(x, y, gp.tileSize, gp.tileSize);
