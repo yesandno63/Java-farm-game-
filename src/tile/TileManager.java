@@ -114,31 +114,24 @@ public class TileManager {
             );
 
             int rowCount = 0;
-            for(int row = 0; row < gp.maxWorldCol; ++row){
+            for(int row = 0; row < gp.maxWorldRow; ++row){
 
                 String[] values = br.readLine().split(",");
 
-                for(int col = 0; col < gp.maxWorldRow; ++col){
+                for(int col = 0; col < gp.maxWorldCol; ++col){
+
                     int localGid = Integer.parseInt(values[col]);
 
-                    //Convertion indice local en GID global
-                    //En gros la map est fait avec Tile qui utilise ses GID, donc on les converti pour pas foutre la merde avec les autres
                     int globalGid;
 
                     if(localGid == -1){
-                        globalGid = -1; // Ya pas de tile bro, en gros problème
+                        globalGid = -1;
                     } else {
-                        // On le convertit en GID global en ajoutant le firstGid du tileset
                         globalGid = localGid + tileSetFirstGid;
                     }
 
-                    if(rowCount < 3 && col < 5){
-                        System.out.println("loadMap [" + row + "," + col + "]: localGid=" + localGid + " + firstGid(" + tileSetFirstGid + ") = globalGid=" + globalGid);
-                    }
-
-                    layer[row][col] = globalGid;
+                    layer[col][row] = globalGid;
                 }
-                ++rowCount;
             }
             br.close();
             System.out.println("Map loaded with firstGid=" + tileSetFirstGid);
@@ -148,38 +141,69 @@ public class TileManager {
         }
     }
 
+
+
     public void drawLayer(Graphics2D g2, int[][] layer){
 
-        int worldCol = 0;
-        int worldRow = 0;
+        // Position de la caméra dans le monde
+        int cameraWorldX = gp.player.worldX - gp.player.screenX;
+        int cameraWorldY = gp.player.worldY - gp.player.screenY;
 
-        for(worldCol = 0; worldCol < gp.maxScreenCol; ++worldCol){
-            for(worldRow = 0; worldRow < gp.maxScreenRow; ++worldRow){
+        // Première tile visible
+        int startCol = Math.floorDiv(cameraWorldX, gp.tileSize);
+        int startRow = Math.floorDiv(cameraWorldY, gp.tileSize);
 
+        // Nombre de tiles nécessaires, y compris la tile partiellement visible au bord.
+        int visibleCols = (gp.screenWidth + Math.floorMod(cameraWorldX, gp.tileSize)
+                + gp.tileSize - 1) / gp.tileSize;
+        int visibleRows = (gp.screenHeight + Math.floorMod(cameraWorldY, gp.tileSize)
+                + gp.tileSize - 1) / gp.tileSize;
+
+        // Parcours des tiles visibles : col correspond à l'axe horizontal, row au vertical.
+        for(int col = 0; col < visibleCols; col++){
+            for(int row = 0; row < visibleRows; row++){
+
+                int worldCol = startCol + col;
+                int worldRow = startRow + row;
+
+                // Vérification des limites du monde
+                if(worldCol < 0 || worldCol >= layer.length ||
+                        worldRow < 0 || worldRow >= layer[worldCol].length){
+                    continue;
+                }
+
+                // Récupération de la tile
                 int gid = layer[worldCol][worldRow];
                 Tile tile = getTileByGID(gid);
 
-                if(tile != null && tile.image != null) {
+                // Position à l'écran
+                int screenX = col * gp.tileSize
+                        - Math.floorMod(cameraWorldX, gp.tileSize);
+
+                int screenY = row * gp.tileSize
+                        - Math.floorMod(cameraWorldY, gp.tileSize);
+
+                // Dessin
+                if(tile != null && tile.image != null){
                     g2.drawImage(
                             tile.image,
-                            x, y,
+                            screenX, screenY,
                             gp.tileSize, gp.tileSize,
                             null
                     );
                 }
 
-                //DEBUG tile si jamais ya une merde dans les chargement/affichage de tiles, où jsp mais tkt le talent
-                if (tile == null) {
+                // DEBUG
+                if(tile == null && gid != -1){
                     g2.setColor(Color.RED);
-                    g2.drawRect(x, y, gp.tileSize, gp.tileSize);
+                    g2.drawRect(screenX, screenY,
+                            gp.tileSize, gp.tileSize);
                 }
-
-                x += gp.tileSize;
             }
-            x = 0;
-            y += gp.tileSize;
         }
     }
+
+
 
     public void draw(Graphics2D g2){
         drawLayer(g2, groundLayer);

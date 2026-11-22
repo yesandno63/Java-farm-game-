@@ -1,16 +1,20 @@
 {
-    "activeFile": "Tiled/Maps/farm.tmx",
+    "activeFile": "Tiled/Environement/tileset_32x32_V2.tsx",
     "expandedProjectPaths": [
-        ".",
         "Tiled/Environement",
+        "Tiled/Maps",
         "Tiled",
-        "Tiled/Maps"
+        "."
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
         "Tiled/Environement/Sol et pente.tsx": {
             "scaleInDock": 1,
-            "scaleInEditor": 3
+            "scaleInEditor": 1
+        },
+        "Tiled/Environement/tileset_32x32_V2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "Tiled/Maps/farm.tmx": {
             "scale": 0.33,
@@ -29,11 +33,11 @@
     "map.renderOrder": "3",
     "map.width": 100,
     "openFiles": [
-        "Tiled/Environement/Sol et pente.tsx",
-        "Tiled/Maps/farm.tmx"
+        "Tiled/Environement/tileset_32x32_V2.tsx"
     ],
     "project": "Java-farm-game.tiled-project",
     "recentFiles": [
+        "Tiled/Environement/tileset_32x32_V2.tsx",
         "Tiled/Environement/Sol et pente.tsx",
         "Tiled/Maps/farm.tmx"
     ],
